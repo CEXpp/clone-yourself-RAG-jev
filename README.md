@@ -17,6 +17,32 @@ java -jar target/digital-twin-0.1.0.jar
 
 可问：“你会什么”“介绍一下自己”“有哪些项目”“怎样记录笔记来源”。陌生问题会返回资料不足。页面展示回答方式、路由方式及可展开的来源。Enter 发送，Shift+Enter 换行。
 
+## 填写 .env 配置
+
+直接填写项目根目录的 `.env`，格式参见 `.env.example`。程序通过 `spring.config.import=optional:file:.env[.properties]` 原生加载，文件不存在也可启动；无需额外依赖或 local profile。
+
+```properties
+JEV_API_KEY=你的JEV密钥
+GEN_URL=https://你的服务地址/v1/chat/completions
+GEN_MODEL=生成模型名称
+GEN_API_KEY=你的模型密钥
+EMBED_URL=https://你的服务地址/v1/embeddings
+EMBED_MODEL=向量模型名称
+EMBED_API_KEY=你的向量模型密钥
+```
+
+使用 Java properties 的 `KEY=value` 格式，**不加引号、不写 export**；Windows 路径使用 `/`，如 `DATA_DIR=D:/local-twin-data`。密钥留空即可保持本地模式。`.env` 已排除 Git，`.env.example` 仅保留空模板。
+
+在项目根目录普通启动即可，修改后重启：
+
+```powershell
+java -jar target/digital-twin-0.1.0.jar
+```
+
+路径相对于进程工作目录；IDE 的工作目录也需设为项目根目录。系统环境变量可覆盖 `.env` 中的同名配置。原有 `application-local.properties` 保留可用，但仅在显式启用 local profile 时加载；切换到 `.env` 后使用上面的普通启动命令即可。
+
+离线导入不启动 Spring、不读取 `.env`；修改数据目录后，导入时也需显式传入相同 `--app.data-dir` 或设置真实 `DATA_DIR` 环境变量。
+
 ## 最小架构
 
 ```text
@@ -67,7 +93,7 @@ java -jar target/digital-twin-0.1.0.jar --app.demo-data=false
 
 ## 接入真实 JEV 与模型
 
-演示模式不进行外部网络调用。设置以下变量后重启即可启用各适配器；密钥只放环境变量，不写入文件或 Git。示例里的占位符需要替换；没有配置模型名称时生成/embedding 继续使用本地模式。
+演示模式不进行外部网络调用。设置以下变量后重启即可启用各适配器；密钥放在环境变量或已排除 Git 的本地配置文件中，不提交 Git。示例里的占位符需要替换；没有配置模型名称时生成/embedding 继续使用本地模式。
 
 | 变量 | 默认值 / 含义 |
 | --- | --- |

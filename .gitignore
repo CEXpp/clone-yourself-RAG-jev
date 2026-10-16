@@ -4,3 +4,4 @@
 *.log
 /.idea/
 *.iml
+/application-local.properties

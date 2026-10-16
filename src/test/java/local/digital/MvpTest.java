@@ -34,7 +34,7 @@ class MvpTest {
         mapper.writeValue(dir.resolve("private/cards.json").toFile(), List.of(
                 entry("hidden-evidence", "evidence", "PRIVATE_FOLDER_CANARY", "public", true)));
         app = new SpringApplicationBuilder(App.class).run("--server.port=0", "--app.data-dir=" + dir,
-                "--app.jev-key=", "--app.embedding-key=", "--app.generation-key=");
+                "--app.demo-data=true", "--app.jev-key=", "--app.embedding-key=", "--app.generation-key=");
         base = "http://127.0.0.1:" + ((ServletWebServerApplicationContext)app).getWebServer().getPort();
     }
     @AfterAll static void stop() { if (app != null) app.close(); }

@@ -1,0 +1,38 @@
+# 本地填写配置。启动时使用：
+# java -jar target/digital-twin-0.1.0.jar --spring.profiles.active=local
+# 从项目根目录执行；保存后重启生效。application-local.properties 已排除 Git。
+# 密钥保持空值即为无密钥演示；不要把真实密钥填进 .example 文件。
+# ${变量名:默认值} 支持环境变量；也可把整个值替换为你的实际配置。
+
+# 本地服务
+server.address=127.0.0.1
+server.port=8080
+
+# 数据与演示：true 加载虚构示例；准备好公开资料后可改为 false。
+# Windows 路径使用 /，例如 D:/local-twin-data。
+app.data-dir=./data
+app.demo-data=true
+app.http-timeout-seconds=8
+
+# JEV 仅用于意图路由。填密钥即可启用；失败/低置信度自动回退。
+app.jev-url=https://api.typesafe.ai/v1/systemone
+app.jev-model=jev-latest
+app.jev-key=${JEV_API_KEY:}
+app.jev-threshold=0.65
+
+# 生成模型：填写完整 chat/completions 端点、模型名称与密钥。
+# key/model 任意一项为空时使用本地摘录回答。
+app.generation-url=https://api.openai.com/v1/chat/completions
+app.generation-model=${GEN_MODEL:}
+app.generation-key=${GEN_API_KEY:}
+
+# Embedding：填写完整 embeddings 端点；模型输出须为 1-1024 维浮点向量。
+# key/model 任意一项为空时使用本地演示向量。
+# 本机 HTTP 模型无鉴权时，可用非空占位 key 启用适配器。
+app.embedding-url=https://api.openai.com/v1/embeddings
+app.embedding-model=${EMBED_MODEL:}
+app.embedding-key=${EMBED_API_KEY:}
+
+# 此文件用于聊天服务；离线导入不加载 Spring 配置。
+# 若改了数据目录，导入时也传 --app.data-dir=相同目录。
+# 导入默认私有，公开批准必须在离线命令中显式指定，不在此设置。
