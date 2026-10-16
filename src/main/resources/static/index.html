@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>个人数字分身 · 本地演示</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<div class="layout">
+  <aside><div class="brand">◈ <span>PERSONAL / KNOWLEDGE</span></div><h1>让资料<br>有据可答。</h1><p>从能力到项目，回到每一条来源。</p><div class="notice"><span class="dot"></span>仅使用已批准的公开资料<p id="dataset">当前加载虚构示例，不代表真实用户。</p></div><div class="status" id="status" aria-live="polite">正在连接本地服务…</div><footer>JDK 25 · Spring Boot · Lucene<br>单进程，本地运行</footer></aside>
+  <main><header><div><small>数字分身 / 对话</small><h2>从一个问题开始</h2></div><span class="pill">来源可追溯</span></header>
+  <section id="messages" aria-label="对话记录" aria-live="polite"><article class="welcome"><span class="avatar">◈</span><h3>你好，欢迎了解示例分身。</h3><p>可以询问能力、项目或资料中的具体内容。没有依据时，我会明确说明。</p><div class="suggestions"><button type="button" data-question="你会什么">你会什么 ↗</button><button type="button" data-question="有哪些项目">有哪些项目 ↗</button><button type="button" data-question="怎样记录笔记来源">怎样记录笔记来源 ↗</button></div></article></section>
+  <form id="chat-form"><label for="question">你的问题</label><div class="composer"><textarea id="question" name="question" maxlength="2000" rows="2" placeholder="问问能力、项目或某条公开资料…" required></textarea><button id="send" type="submit">发送 ↑</button></div><p>无密钥也可对话 · 演示向量用于展示流程 · 不提供私有资料访问</p></form>
+  </main>
+</div>
+</body></html>

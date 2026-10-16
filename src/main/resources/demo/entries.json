@@ -1,0 +1,39 @@
+[
+  {
+    "id": "demo-profile", "type": "profile", "title": "示例分身介绍",
+    "content": "我是虚构的示例分身小示，只用于演示资料问答，不代表项目所有者。我关注信息整理与知识分享。",
+    "visibility": "public", "publicConfirmed": true, "source": "虚构示例 / 介绍卡", "updatedAt": "2026-10-16"
+  },
+  {
+    "id": "demo-skill-writing", "type": "skill", "title": "技术写作（虚构示例）",
+    "content": "能把操作步骤整理成简洁的使用指南，给出目的、步骤和常见问题。",
+    "level": "能独立完成简单指南（仅虚构演示）", "boundaries": "不据此声称具备专业出版或行业认证资质。",
+    "evidenceIds": ["demo-evidence"], "visibility": "public", "publicConfirmed": true,
+    "source": "虚构示例 / 写作能力卡", "updatedAt": "2026-10-16"
+  },
+  {
+    "id": "demo-skill-organizing", "type": "skill", "title": "资料整理（虚构示例）",
+    "content": "能按主题整理笔记，记录资料来源和更新时间，并区分学习笔记与实践成果。",
+    "level": "能独立完成小规模整理（仅虚构演示）", "boundaries": "没有大规模生产系统的效果数据。",
+    "evidenceIds": [], "visibility": "public", "publicConfirmed": true,
+    "source": "虚构示例 / 整理能力卡", "updatedAt": "2026-10-16"
+  },
+  {
+    "id": "demo-project", "type": "project", "title": "阅读笔记盒（虚构项目）",
+    "content": "这是虚构的阅读笔记整理练习。示例角色负责主题分类和指南编写；示例交付物是一份分类目录和使用说明。没有真实用户数据、团队收益或量化指标。",
+    "visibility": "public", "publicConfirmed": true,
+    "source": "虚构示例 / 项目卡", "updatedAt": "2026-10-16"
+  },
+  {
+    "id": "demo-evidence", "type": "evidence", "title": "指南片段（虚构证据）",
+    "content": "指南示例：先为笔记选择一个主题，再记录原始来源，最后填写更新时间。此片段只用于演示证据引用，不是用户真实作品。",
+    "visibility": "public", "publicConfirmed": true,
+    "source": "虚构示例 / 指南第 1 节", "updatedAt": "2026-10-16"
+  },
+  {
+    "id": "demo-learning", "type": "learning", "title": "信息分类入门（虚构学习条目）",
+    "content": "示例角色正在学习主题分类，只完成了阅读计划。尚未完成对应实践；不能将学习计划当作已经掌握的能力。",
+    "visibility": "public", "publicConfirmed": true,
+    "source": "虚构示例 / 学习卡", "updatedAt": "2026-10-16"
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "replace-with-unique-id",
+    "type": "skill",
+    "title": "待填写：技能名称",
+    "content": "待填写：可完成的任务与实际使用情况。此文件是格式模板，不代表真实个人事实。",
+    "level": "待本人填写与核对",
+    "boundaries": "待填写：尚未掌握或不适用的部分",
+    "evidenceIds": [],
+    "visibility": "private",
+    "publicConfirmed": false,
+    "source": "待填写：有权公开的来源名称和页码或章节，不填内部路径或联系方式",
+    "updatedAt": "2026-10-16"
+  }
+]
