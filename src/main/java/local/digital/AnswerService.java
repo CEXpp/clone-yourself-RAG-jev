@@ -129,6 +129,13 @@ public class AnswerService {
             }
         }
 
+        // 确定性收窄守卫：任何带有约束（领域限定、属性、否定、比较）的提问一律走检索+门禁，不可被高置信度远程决策带偏
+        if (List.of("skills", "projects", "profile").contains(decision.intent())) {
+            if (!isGenuinelyUnrestrictedOverview(effectiveQuestion, decision.intent())) {
+                decision = new ModelHttp.Decision("retrieve", -1, decision.provider(), "narrowing-guard(constrained-overview)");
+            }
+        }
+
         if (listener.isCancelled()) return null;
         listener.onRoute(decision);
 
@@ -154,7 +161,8 @@ public class AnswerService {
 
             for (Entry e : entries) {
                 int n = sources.size() + 1;
-                sources.add(new Chat.Source(n, e.title(), e.source(), "完整条目", e.updatedAt(), e.content(), e.id(), 0, e.content().length()));
+                String citable = e.searchableContent();
+                sources.add(new Chat.Source(n, e.title(), e.source(), "完整条目", e.updatedAt(), citable, e.id(), 0, citable.length()));
                 answerText.append(e.title()).append("：").append(e.content());
                 if (e.level() != null) answerText.append("\n熟练程度：").append(e.level());
                 if (e.boundaries() != null) answerText.append("\n范围限制：").append(e.boundaries());
@@ -541,9 +549,96 @@ public class AnswerService {
         }
 
         if (hasOverviewIntent) {
-            return new ModelHttp.Decision(targetCategory, -1, provider, "layer2:overview:" + targetCategory);
+            if (isGenuinelyUnrestrictedOverview(question, targetCategory)) {
+                return new ModelHttp.Decision(targetCategory, -1, provider, "layer2:overview:" + targetCategory);
+            }
+            return new ModelHttp.Decision("retrieve", -1, provider, "layer2:retrieve(constrained-overview)");
         }
 
         return new ModelHttp.Decision("retrieve", -1, provider, "layer2:retrieve(no-overview-intent)");
+    }
+
+    private static final List<String> COMMON_OVERVIEW_TOKENS = List.of(
+            "做过哪些", "参与过哪些", "有哪些经历", "都有哪些", "包含哪些", "包括哪些",
+            "拿得出手的", "项目经历", "项目清单", "项目列表", "你会什么", "你有哪些技能",
+            "技能清单", "技能列表", "自我介绍", "介绍一下自己", "介绍自己", "个人信息",
+            "个人资料", "个人背景", "基本情况", "有哪些", "有什么", "有啥", "做过", "参与过",
+            "会什么", "懂什么", "列一下", "列出", "列举", "清单", "列表", "全貌",
+            "全部", "所有", "整体", "总览", "概览", "汇总", "盘点", "一览",
+            "梳理", "说说", "告诉", "聊聊", "看看", "详细", "简要", "简介",
+            "简述", "概述", "介绍", "哪些", "什么", "自己", "个人", "情况",
+            "背景", "简历", "你是谁", "你", "您", "你的", "您的", "请",
+            "帮我", "给我", "麻烦", "能否", "可以", "一下", "下", "列",
+            "的", "了", "过", "啊", "呀", "吧", "呢", "么"
+    );
+
+    private static final List<String> PROJECT_SPECIFIC_OVERVIEW_TOKENS = List.of(
+            "项目", "工程", "作品", "经历"
+    );
+
+    private static final List<String> SKILL_SPECIFIC_OVERVIEW_TOKENS = List.of(
+            "技能", "能力", "本领", "技术栈", "技术", "擅长"
+    );
+
+    private static final List<String> PROFILE_SPECIFIC_OVERVIEW_TOKENS = List.of(
+            "自我介绍", "个人信息", "个人资料", "个人背景", "基本情况", "简历"
+    );
+
+    public static boolean isGenuinelyUnrestrictedOverview(String question, String targetCategory) {
+        if (question == null || question.isBlank()) return false;
+        String q = question.toLowerCase(Locale.ROOT).replaceAll("[\\s\\p{P}]", "");
+        switch (q) {
+            case "你会什么", "技能", "你有哪些技能", "whatcanyoudo", "skills" -> {
+                if ("skills".equals(targetCategory)) return true;
+            }
+            case "介绍一下自己", "你是谁", "自我介绍", "介绍自己", "profile" -> {
+                if ("profile".equals(targetCategory)) return true;
+            }
+            case "有哪些项目", "你做过哪些项目", "项目经历", "projects" -> {
+                if ("projects".equals(targetCategory)) return true;
+            }
+        }
+
+        String lower = question.toLowerCase(Locale.ROOT);
+
+        // 1. 约束与排除检测
+        for (String neg : List.of("除了", "除去", "除外", "排除", "不包括", "不包含", "不含", "不用", "不要", "不是", "不会", "不能", "不擅长", "没有", "未曾", "从未", "未做过", "非")) {
+            if (lower.contains(neg)) return false;
+        }
+        for (String dem : List.of("这个项目", "该项目", "那个项目", "这项目", "那项目", "本项目", "这个系统", "该系统", "那个系统", "这系统", "那系统", "本系统", "这个", "那个", "这些", "那些", "某项", "某个", "单一", "单个", "这门", "这项", "这篇", "这里")) {
+            if (lower.contains(dem)) return false;
+        }
+        if (Pattern.compile("[a-zA-Z0-9]").matcher(lower).find()) {
+            return false;
+        }
+        for (String ent : List.of("奶茶", "点评", "秒杀", "一人一单", "关单", "超时", "延迟队列", "购物车", "订单", "缓存", "分身", "数字分身", "并发", "线程池", "分布式", "锁", "数据库", "自测", "爬虫", "向量", "架构", "设计", "原理", "源码", "微服务", "网关", "熔断", "链路追踪", "流式", "未做过", "自述", "虚构")) {
+            if (lower.contains(ent)) return false;
+        }
+        for (String cmp : List.of("最", "更", "比较", "哪一个", "哪个", "哪项", "哪部", "哪家", "首个", "第一", "核心", "优先")) {
+            if (lower.contains(cmp)) return false;
+        }
+        for (String cst : List.of("为什么", "为何", "怎么", "如何", "怎样", "多少", "多大", "多久", "多深", "哪里", "何处", "什么水平", "到什么水平", "程度", "水平")) {
+            if (lower.contains(cst)) return false;
+        }
+        String polCheck = lower.replace("什么", "").replace("怎么", "").replace("多么", "");
+        for (String pol : List.of("吗", "么", "是不是", "会不会", "能不能", "懂不懂", "有没有", "行不行", "可否")) {
+            if (polCheck.contains(pol)) return false;
+        }
+
+        // 2. 剥离无约束总览词库，检查是否有任何修饰性残留（如“支付”、“金融”、“前端”等）
+        List<String> allowed = new ArrayList<>(COMMON_OVERVIEW_TOKENS);
+        switch (targetCategory) {
+            case "skills" -> allowed.addAll(SKILL_SPECIFIC_OVERVIEW_TOKENS);
+            case "projects" -> allowed.addAll(PROJECT_SPECIFIC_OVERVIEW_TOKENS);
+            case "profile" -> allowed.addAll(PROFILE_SPECIFIC_OVERVIEW_TOKENS);
+            default -> { return false; }
+        }
+        allowed.sort(Comparator.comparingInt(String::length).reversed());
+
+        String remainder = lower.replaceAll("[\\s\\p{P}\\p{S}]", "");
+        for (String token : allowed) {
+            remainder = remainder.replace(token, "");
+        }
+        return remainder.isEmpty();
     }
 }

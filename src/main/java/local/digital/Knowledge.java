@@ -186,7 +186,7 @@ public class Knowledge implements AutoCloseable {
     }
 
     public static List<Chunk> chunkEntry(Entry e, OnnxEmbedding.Tokenizer tokenizer) {
-        String content = e.content();
+        String content = e.searchableContent();
         if (content.isEmpty()) {
             return List.of(new Chunk(e, "", 0, 0, 0));
         }
@@ -309,7 +309,7 @@ public class Knowledge implements AutoCloseable {
         Float configuredThreshold = (settings != null) ? settings.vectorThreshold() : null;
         float vectorThreshold = (configuredThreshold != null) ? configuredThreshold : switch (provider != null ? provider.mode() : "") {
             case "http" -> 0.86f;
-            case "onnx" -> 0.80f;
+            case "onnx" -> 0.805f;
             default -> 0.82f;
         };
         Set<Integer> vectorAdmitted = new HashSet<>();

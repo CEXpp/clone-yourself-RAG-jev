@@ -110,7 +110,7 @@ class EmbeddingProviderTest {
         var http = new ModelHttp(settings, mapper);
 
         try (var knowledge = new Knowledge(settings, mapper, http)) {
-            var result = knowledge.searchWithCandidates("阅读笔记盒");
+            var result = knowledge.searchWithCandidates("奶茶点单小程序后端");
             assertThat(result.hits()).isNotEmpty();
 
             Knowledge.Hit firstHit = result.hits().getFirst();
@@ -131,7 +131,7 @@ class EmbeddingProviderTest {
 
             // Also verify Chat.Source contains entryId
             var chat = new Chat(knowledge, settings, http);
-            var response = (Chat.Answer) chat.chat(new Chat.Question("阅读笔记盒")).getBody();
+            var response = (Chat.Answer) chat.chat(new Chat.Question("奶茶点单小程序后端")).getBody();
             assertThat(response).isNotNull();
             assertThat(response.sources()).isNotEmpty();
             assertThat(response.sources().getFirst().entryId()).isEqualTo(firstHit.entryId());
@@ -140,12 +140,19 @@ class EmbeddingProviderTest {
 
     @Test
     void onnxEmbeddingInferenceIfSpikeModelPresent() throws Exception {
-        Path spikeDir = Path.of("/home/hatch/workspace/projects/spike/model");
-        if (!Files.isRegularFile(spikeDir.resolve("model.onnx")) || !Files.isRegularFile(spikeDir.resolve("vocab.txt"))) {
-            return;
+        Path modelDir = Path.of("models");
+        if (!Files.isRegularFile(modelDir.resolve("model.onnx")) || !Files.isRegularFile(modelDir.resolve("vocab.txt"))) {
+            Path spikeDir = Path.of("/home/hatch/workspace/projects/spike/model");
+            if (Files.isRegularFile(spikeDir.resolve("model.onnx")) && Files.isRegularFile(spikeDir.resolve("vocab.txt"))) {
+                modelDir = spikeDir;
+            }
         }
+        org.junit.jupiter.api.Assumptions.assumeTrue(
+                Files.isRegularFile(modelDir.resolve("model.onnx")) && Files.isRegularFile(modelDir.resolve("vocab.txt")),
+                "ONNX model and vocab files not present; skipping ONNX native-inference test"
+        );
 
-        try (var onnx = new OnnxEmbedding(spikeDir)) {
+        try (var onnx = new OnnxEmbedding(modelDir)) {
             assertThat(onnx.dimensions()).isEqualTo(512);
             assertThat(onnx.mode()).isEqualTo("onnx");
 

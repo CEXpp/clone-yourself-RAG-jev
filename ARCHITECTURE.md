@@ -81,7 +81,7 @@ flowchart TD
   - **为什么存在**：解耦向量化实现与索引/检索管线。区分文档侧 [`embedDocument(String)`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/EmbeddingProvider.java#L4) 与查询侧 [`embedQuery(String)`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/EmbeddingProvider.java#L5)，使模型指令前缀仅施加于检索提问侧，文档入库不加。
 - [`OnnxEmbedding`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OnnxEmbedding.java)
   - **职责**：基于 Microsoft ONNX Runtime 的本地神经语义嵌入实现（加载 BGE-small-zh-v1.5，512 维）。
-  - **为什么存在**：支撑系统的完全离线与零依赖运行能力。包含内置轻量级 [`Tokenizer`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OnnxEmbedding.java#L19-L154)（实现 WordPiece 贪心最长匹配分词与字符偏移定位 [`TokenSpan`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OnnxEmbedding.java#L17)）。采用 **CLS pooling**（首 token 隐藏态提取）与 L2 归一化；在初始化阶段精细区分文件缺失、`LinkageError`（原生动态库未就绪）与 `OrtException`，不吞没致命错误。
+  - **为什么存在**：支撑系统的完全离线与零依赖运行能力。包含内置轻量级 [`Tokenizer`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OnnxEmbedding.java#L19-L154)（实现 WordPiece 贪心最长匹配分词与字符偏移定位 [`TokenSpan`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OnnxEmbedding.java#L17)，遵循上游模型 `do_lower_case=false` 配置）。采用 **CLS pooling**（首 token 隐藏态提取）与 L2 归一化；在初始化阶段精细区分文件缺失、`LinkageError`（原生动态库未就绪）与 `OrtException`，不吞没致命错误。
 - [`HttpEmbedding`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/HttpEmbedding.java)
   - **职责**：OpenAI 兼容规范的远程向量化适配器。
   - **为什么存在**：满足商业级高维远程 Embedding（如 `bge-m3`、`text-embedding-3-small`）接入诉求，支持在启动阶段探测实际向量维度并校验单运行期维度恒定。
@@ -96,7 +96,7 @@ flowchart TD
     1. **数据准入过滤**：在读取 `data/public/` 与内置条目时，强制校验 [`Entry.approved()`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Entry.java#L8)，排重并冻结条目列表。
     2. **Token 感知分块**：[`chunkEntry()`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L188) 按分词器 token 预算计长（单块 $\le 400$ tokens，含标题与特殊 token 预留，重叠 64 tokens），精准记录 [`Chunk`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L397) 的字符起止偏移。
     3. **Lucene 混合索引**：单 `IndexWriter` 写入 `TextField`（BM25 词法）与 `KnnFloatVectorField`（HNSW 向量）。
-    4. **双通道门禁与融合**：[`searchWithCandidates()`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L244) 并行执行 SmartCN BM25 词法召回（Top-12）与 Knn 向量召回（Top-12）；施加词法覆盖率门禁（$\ge 0.50$）与向量变换余弦门禁（ONNX $\ge 0.80$）；通过 `TopDocs.rrf(k=60)` 重排并执行同条目字符重叠去重，输出携带详尽透视指标的 [`Hit`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L398) 与 [`SearchResult`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L425)。
+    4. **双通道门禁与融合**：[`searchWithCandidates()`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L244) 并行执行 SmartCN BM25 词法召回（Top-12）与 Knn 向量召回（Top-12）；施加词法覆盖率门禁（$\ge 0.50$）与向量变换余弦门禁（ONNX $\ge 0.805$）；通过 `TopDocs.rrf(k=60)` 重排并执行同条目字符重叠去重，输出携带详尽透视指标的 [`Hit`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L398) 与 [`SearchResult`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/Knowledge.java#L425)。
 - [`OfflineImport`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/OfflineImport.java)
   - **职责**：独立离线导入工具，完全不启动 Web 服务与网络连接。
   - **为什么存在**：安全解析本地 JSON、TXT、Markdown 及文本型 PDF（PDFBox 逐页提取定位），默认将数据封存于 `data/private/`；仅当命令行附带 `--app.approve-public=true` 且条目标注完备时方写入 `data/public/`。
@@ -170,7 +170,7 @@ sequenceDiagram
             Know->>Lucene: KnnFloatVectorQuery (ONNX/HNSW 向量 Top-12)
             Lucene-->>Know: 词法候选 + 向量候选
             Know->>Know: 词法门禁: 命中间隔查询词覆盖率 >= 0.50
-            Know->>Know: 向量门禁: 变换余弦分 (1+cos)/2 >= 0.80
+            Know->>Know: 向量门禁: 变换余弦分 (1+cos)/2 >= 0.805
             Know->>Know: 候选求并集并经 TopDocs.rrf(k=60) 融合重排
             Know->>Know: 同条目重叠块近重复去重 (顺延补位) -> Top-4
             Know-->>Answer: SearchResult (Top-4 Hits + 透视指标)
@@ -215,8 +215,8 @@ sequenceDiagram
    - 若配置官方 JEV 且置信度 $\ge 0.65$，则采纳 JEV 决策，低于阈值稳妥回退本地规则。
 3. **混合检索与双通道门禁 (Retrieve & Gate)**  
    - 词法通道：查询词通过 SmartChineseAnalyzer 分词去重，计算候选块覆盖的独立查询词比例，$\ge 0.50$ 放行。
-   - 向量通道：查询经 BGE-small-zh-v1.5 推理得到 512 维向量，计算 Lucene 转换余弦分数 $\frac{1+\cos(\theta)}{2}$，$\ge 0.80$ 放行。
-   - 门禁后候选通过 RRF ($k=60$) 倒数排名融合；若同一条目产生多个在字符范围上重叠的分块，仅保留名次最优的一块，后续候选依次顺延补位，最终锁定 Top-4。
+    - 向量通道：查询经 BGE-small-zh-v1.5 推理得到 512 维向量，计算 Lucene 转换余弦分数 $\frac{1+\cos(\theta)}{2}$，$\ge 0.805$ 放行。
+    - 门禁后候选通过 RRF ($k=60$) 倒数排名融合；若同一条目产生多个在字符范围上重叠的分块，仅保留名次最优的一块，后续候选依次顺延补位，最终锁定 Top-4。
 4. **生成、校验与降级 (Generate & Validate)**  
    - 若未配置外部模型，直接将 Top-4 组装为规范的标号摘录（`local-extract`）。
    - 若配置大模型，要求其仅依据上下文生成并标注 `[n]` 引用。收到全文后，[`AnswerService.validateCitations()`](file:///home/hatch/workspace/projects/clone-yourself-rag-jev/src/main/java/local/digital/AnswerService.java#L272) 验证引用编号是否存在且位于有效区间；一旦校验不通过，**立即整体回退为摘录模式**，保证输出百分之百有据可查。
@@ -240,14 +240,13 @@ sequenceDiagram
 - **背景**：针对预训练 Transformer 模型，将各 token 的隐藏层表示聚合为句向量通常有 CLS 取首位与 Mean 平均两种池化方式。
 - **选型方案**：强制遵循定稿设计，采用 **CLS pooling**（提取首个 `[CLS]` token 对应的 512 维隐藏向量）并执行 L2 归一化。
 - **深度权衡**：
-  - *上游架构对齐*：BAAI bge-small-zh-v1.5 在对比学习预训练和微调时，官方针对检索任务专门优化了 CLS token 的表征能力；若错误使用 Mean pooling，会导致向量空间发生偏移，相似度计算精度下降。
-  - *跨平台数值一致性*：采用 CLS pooling 使得 Java ONNX Runtime 推理结果与 Python 原生 PyTorch/Transformers 的余弦相似度达到 $\ge 0.999$，确保了离线评测与线上生产环境的完全对齐。
+  - *跨平台分词与数值一致性*：分词管线严格对齐上游 `BAAI/bge-small-zh-v1.5` 的 `do_lower_case=false` 配置（向量嵌入与切块跨度两条路径均不无条件转小写）。由于词表 `vocab.txt` 不含大写英文字符，包含大写的技术专有名词（如 "Spring Boot"、"LangChain4j"、"BM25"）在上游参考分词器与内置分词器中均忠实映射为 `[UNK]`（ID 100），消除了人为转小写引入的 token ID 漂移；结合 CLS pooling 与 L2 归一化，使得 Java ONNX Runtime 推理结果与 Python 原生 PyTorch/Transformers 的余弦相似度达到 $\ge 0.999$，确保了离线评测与线上生产环境的真实对齐。
 
 ### 决策 3：双通道相关性门禁 (Dual Gate) vs 粗暴全局单一阈值
 - **背景**：检索召回后的 Top-K 常常包含与查询意图无关但碰巧词面重合或向量距离接近的噪声块。
-- **选型方案**：设计词法覆盖率门禁（$\ge 0.50$）与向量变换相似度门禁（$\ge 0.80$）双通道，任意一门达标方可准入；两者皆不过则全盘拒答。
+- **选型方案**：设计词法覆盖率门禁（$\ge 0.50$）与向量变换相似度门禁（$\ge 0.805$）双通道，任意一门达标方可准入；两者皆不过则全盘拒答。
 - **深度权衡**：
-  - *单一向量门的局限*：语义模型对跨主题提问有时存在基底偏置，如负例 `d09`（*“他的奶茶项目服务过多少付费用户？”*）与奶茶项目条目的向量相似度达到了 0.7903；若向量阈值稍有松懈，就会被误判为高相关而引发严重幻觉。
+  - *单一向量门的局限*：语义模型对跨主题提问有时存在基底偏置，如负例 `d09`（*“他的奶茶项目服务过多少付费用户？”*）与奶茶项目条目的向量相似度达到了 0.8028；若向量阈值稍有松懈（如设为 0.80），就会被误判为高相关而引发严重幻觉。重校准后设为 0.805 成功阻断此负例。
   - *双通道互锁价值*：词法覆盖率门禁强制检查查询词命中分布（`d09` 覆盖率仅 0.40），成功拦截该负例；而对于同义改写的正例提问，即使词法覆盖不足，其向量分数（$>0.81$）仍能触发向量门禁放行。双通道实现了“精确匹配防穿透”与“语义泛化保召回”的精巧平衡。
 
 ### 决策 4：真实进度流 (Progress Stream) vs 假打字机 Token 流 (Fake Token Stream)

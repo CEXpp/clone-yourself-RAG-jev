@@ -62,8 +62,11 @@ class WordPieceTokenizerTest {
 
     @Test
     void realVocabFileTestsIfPresent() throws Exception {
-        Path realVocab = Path.of("/home/hatch/workspace/projects/spike/model/vocab.txt");
-        if (!java.nio.file.Files.isRegularFile(realVocab)) return;
+        Path realVocab = Path.of("models", "vocab.txt");
+        org.junit.jupiter.api.Assumptions.assumeTrue(
+                java.nio.file.Files.isRegularFile(realVocab),
+                "Vocabulary file not found at models/vocab.txt"
+        );
 
         var tokenizer = new OnnxEmbedding.Tokenizer(realVocab);
         List<String> tokens = tokenizer.tokenize("检索系统");
@@ -77,6 +80,40 @@ class WordPieceTokenizerTest {
         assertThat(longTokens).hasSize(OnnxEmbedding.Tokenizer.MAX_LEN);
         assertThat(longTokens.getFirst()).isEqualTo("[CLS]");
         assertThat(longTokens.getLast()).isEqualTo("[SEP]");
+    }
+
+    @Test
+    void mixedCaseTechnicalStringsFollowUpstreamDoLowerCaseFalse() throws Exception {
+        Path realVocab = Path.of("models", "vocab.txt");
+        org.junit.jupiter.api.Assumptions.assumeTrue(
+                java.nio.file.Files.isRegularFile(realVocab),
+                "Vocabulary file not found at models/vocab.txt"
+        );
+        var tokenizer = new OnnxEmbedding.Tokenizer(realVocab);
+
+        // Mixed-case strings: because vocab.txt has do_lower_case=false and contains no uppercase letters,
+        // upstream reference tokenizer produces [UNK] (id 100) for mixed-case words.
+        List<Integer> springBootIds = tokenizer.encode("Spring Boot");
+        assertThat(springBootIds).containsExactly(101, 100, 100, 102);
+
+        List<Integer> langChainIds = tokenizer.encode("LangChain4j");
+        assertThat(langChainIds).containsExactly(101, 100, 102);
+
+        List<Integer> bm25Ids = tokenizer.encode("BM25");
+        assertThat(bm25Ids).containsExactly(101, 100, 102);
+
+        // Lowercase counterparts: "spring", "boot", and "25" are in vocab, matching exact token IDs
+        List<Integer> lowerSpringBootIds = tokenizer.encode("spring boot");
+        assertThat(lowerSpringBootIds).containsExactly(101, 11043, 13119, 102);
+
+        List<Integer> num25Ids = tokenizer.encode("25");
+        assertThat(num25Ids).containsExactly(101, 8132, 102);
+
+        // Verify span tokenization also does not force lowercase
+        var spans = tokenizer.tokenizeWithSpans("Spring Boot 框架");
+        assertThat(spans.get(0).token()).isEqualTo("[UNK]");
+        assertThat(spans.get(0).start()).isEqualTo(0);
+        assertThat(spans.get(0).end()).isEqualTo(6);
     }
 
     @Test
@@ -115,8 +152,8 @@ class WordPieceTokenizerTest {
     void fallbackTokenizerWorksWithoutVocabFile() {
         var tokenizer = new OnnxEmbedding.Tokenizer();
         var spans = tokenizer.tokenizeWithSpans("Java 开发者");
-        assertThat(spans).hasSize(4); // "java", "开", "发", "者"
-        assertThat(spans.getFirst().token()).isEqualTo("java");
+        assertThat(spans).hasSize(4); // "Java", "开", "发", "者"
+        assertThat(spans.getFirst().token()).isEqualTo("Java");
         assertThat(spans.getFirst().start()).isEqualTo(0);
         assertThat(spans.getFirst().end()).isEqualTo(4);
     }
