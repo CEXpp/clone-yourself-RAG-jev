@@ -1,0 +1,30 @@
+# ==============================================================================
+# .dockerignore for clone-yourself-rag
+# ==============================================================================
+
+# Exclude secrets and local runtime environment variables
+.env
+.env.*
+.env.properties
+
+# Exclude local database and index storage
+data/
+
+# Exclude Maven build outputs and temporary artifacts
+target/
+
+# Exclude Git metadata and IDE settings
+.git/
+.gitignore
+.idea/
+*.iml
+.vscode/
+
+# Deliberate route for model assets:
+# Model files enter via the Docker multi-stage build stage (fetched & SHA256-verified
+# by scripts/fetch-model.sh inside the builder image, then copied into the runtime
+# image via COPY --from=builder /build/models /app/models).
+# Excluding models/ keeps the Docker build context transfer lightweight (~few KB instead of ~95MB).
+# To perform an offline Docker build using pre-existing local models/, remove or comment
+# out the line below and ensure Dockerfile has 'COPY models/ models/' enabled.
+models/
