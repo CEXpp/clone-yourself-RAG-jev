@@ -8,7 +8,11 @@ public class Settings {
     private final Environment env;
     public Settings(Environment env) { this.env = env; }
     public String get(String key) { return env.getProperty("app." + key, ""); }
-    public int timeout() { return Math.clamp(Integer.parseInt(get("http-timeout-seconds")), 1, 60); }
+    public int timeout() {
+        String v = get("http-timeout-seconds");
+        if (v.isBlank()) return 8;
+        try { return Math.clamp(Integer.parseInt(v), 1, 60); } catch (Exception e) { return 8; }
+    }
     public boolean hasGeneration() { return !get("generation-key").isBlank() && !get("generation-model").isBlank(); }
     public boolean hasEmbedding() { return !get("embedding-key").isBlank() && !get("embedding-model").isBlank(); }
     public String embeddingMode() { String m = get("embedding-mode"); return m.isBlank() ? "auto" : m; }
