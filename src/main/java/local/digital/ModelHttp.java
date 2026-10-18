@@ -46,7 +46,7 @@ public class ModelHttp {
         if (!"choice".equals(answer.path("type").asText()) || !choices.containsKey(choice)
                 || !Double.isFinite(confidence) || confidence < 0 || confidence > 1)
             throw new IllegalStateException("JEV响应不符合choice契约");
-        return new Decision(choice, confidence, "jev");
+        return new Decision(choice, confidence, "jev", "remote-jev");
     }
     public float[] embed(String text) throws Exception {
         JsonNode vector = post(settings.get("embedding-url"), settings.get("embedding-key"),
@@ -79,5 +79,9 @@ public class ModelHttp {
         for (int i = 0; i < v.length; i++) v[i] = (float)(v[i] / norm);
         return v;
     }
-    public record Decision(String intent, double confidence, String provider) {}
+    public record Decision(String intent, double confidence, String provider, String explanation) {
+        public Decision(String intent, double confidence, String provider) {
+            this(intent, confidence, provider, null);
+        }
+    }
 }

@@ -1,14 +1,14 @@
 {
   "split" : "dev",
-  "timestamp" : "2026-10-18T07:37:03.974765654Z",
+  "timestamp" : "2026-10-18T08:10:52.860566993Z",
   "lexicalCoverageThreshold" : 0.5,
   "vectorThreshold" : null,
   "modes" : [ {
     "mode" : "lexical-only",
     "effectiveBackend" : "BM25-only",
-    "indexBuildTimeMs" : 1340,
-    "warmP50Ms" : 7.1677393333333335,
-    "warmP95Ms" : 17.631847,
+    "indexBuildTimeMs" : 844,
+    "warmP50Ms" : 4.618647666666667,
+    "warmP95Ms" : 8.875731666666667,
     "recallAt4" : {
       "numerator" : 6,
       "denominator" : 22,
@@ -55,7 +55,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 8,
-      "latencyMs" : 4.515876333333333,
+      "latencyMs" : 4.931450333333333,
       "hits" : [ ]
     }, {
       "id" : "d02",
@@ -72,7 +72,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 7.006627666666667,
+      "latencyMs" : 2.854768,
       "hits" : [ ]
     }, {
       "id" : "d03",
@@ -89,7 +89,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 7.515605333333333,
+      "latencyMs" : 0.9929516666666667,
       "hits" : [ ]
     }, {
       "id" : "d04",
@@ -106,25 +106,25 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 7.1677393333333335,
+      "latencyMs" : 4.579946,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.016393442,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 120,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
+        "relevant" : false,
+        "rrfScore" : 0.016393442,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 120,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.016129032,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d05",
@@ -141,34 +141,34 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 7.979943,
+      "latencyMs" : 5.324915,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 120,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
-        "gateNote" : "lexical-coverage=0.88>=0.50",
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.016393442,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.88>=0.50",
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 143,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-twin",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.016129032,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
+        "relevant" : false,
+        "rrfScore" : 0.016129032,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-project-twin",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 394,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.015873017,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d06",
@@ -185,25 +185,25 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 17.631847,
+      "latencyMs" : 5.741694333333333,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 108,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.67>=0.50",
-        "rrfScore" : 0.016393442,
-        "relevant" : true
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 114,
+        "relevant" : true,
+        "rrfScore" : 0.016393442,
+        "gateNote" : "lexical-coverage=0.67>=0.50",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-profile",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 114,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.016129032,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-profile",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d07",
@@ -220,43 +220,43 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 4,
-      "latencyMs" : 8.646080333333334,
+      "latencyMs" : 8.875731666666667,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 103,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-skill-java",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.016393442,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-skill-java",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 99,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-concurrency",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.016129032,
-        "relevant" : true
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 108,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.63>=0.50",
-        "rrfScore" : 0.015873017,
-        "relevant" : false
-      }, {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
-        "admittedBy" : "lexical",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
+        "relevant" : true,
+        "rrfScore" : 0.016129032,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-evidence-concurrency",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 108,
+        "chunkIndex" : 0,
+        "relevant" : false,
+        "rrfScore" : 0.015873017,
+        "gateNote" : "lexical-coverage=0.63>=0.50",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : false,
         "rrfScore" : 0.015625,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d08",
@@ -273,16 +273,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 14.044622,
+      "latencyMs" : 5.182888,
       "hits" : [ {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
         "admittedBy" : "lexical",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.83>=0.50",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : true,
         "rrfScore" : 0.016393442,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.83>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d09",
@@ -299,7 +299,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 5.627115333333333,
+      "latencyMs" : 5.128216,
       "hits" : [ ]
     }, {
       "id" : "d10",
@@ -316,7 +316,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 5.016999,
+      "latencyMs" : 5.391989,
       "hits" : [ ]
     }, {
       "id" : "d11",
@@ -333,16 +333,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 2.132276,
+      "latencyMs" : 1.0379356666666666,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 94,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-learning-agent",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 94,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.016393442,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-learning-agent",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d12",
@@ -359,7 +359,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 7.845204,
+      "latencyMs" : 4.618647666666667,
       "hits" : [ ]
     }, {
       "id" : "d13",
@@ -376,16 +376,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 5.423286333333333,
+      "latencyMs" : 3.818008,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 100,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-milktea-perf",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "charEnd" : 100,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.016393442,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-evidence-milktea-perf",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d14",
@@ -402,7 +402,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 3.595333666666667,
+      "latencyMs" : 2.7809536666666665,
       "hits" : [ ]
     }, {
       "id" : "d15",
@@ -419,7 +419,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 12.492681,
+      "latencyMs" : 3.670797,
       "hits" : [ ]
     }, {
       "id" : "d16",
@@ -436,15 +436,15 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 0.48579633333333333,
+      "latencyMs" : 0.29938966666666667,
       "hits" : [ ]
     } ]
   }, {
     "mode" : "hash",
     "effectiveBackend" : "BM25 + Hash (256d)",
-    "indexBuildTimeMs" : 229,
-    "warmP50Ms" : 5.186567,
-    "warmP95Ms" : 18.230149333333333,
+    "indexBuildTimeMs" : 164,
+    "warmP50Ms" : 3.6905633333333334,
+    "warmP95Ms" : 9.361618,
     "recallAt4" : {
       "numerator" : 6,
       "denominator" : 22,
@@ -491,7 +491,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 8,
-      "latencyMs" : 12.192066333333333,
+      "latencyMs" : 2.325169333333333,
       "hits" : [ ]
     }, {
       "id" : "d02",
@@ -508,7 +508,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 3.8440973333333335,
+      "latencyMs" : 2.462669,
       "hits" : [ ]
     }, {
       "id" : "d03",
@@ -525,7 +525,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 1.803402,
+      "latencyMs" : 1.0245523333333333,
       "hits" : [ ]
     }, {
       "id" : "d04",
@@ -542,25 +542,25 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 7.440212,
+      "latencyMs" : 3.748677333333333,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.032786883,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 120,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
+        "relevant" : false,
+        "rrfScore" : 0.032786883,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 120,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.03175403,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d05",
@@ -577,34 +577,34 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 18.230149333333333,
+      "latencyMs" : 5.376382333333333,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 120,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
+        "chunkIndex" : 0,
+        "relevant" : true,
+        "rrfScore" : 0.032266457,
         "gateNote" : "lexical-coverage=0.88>=0.50",
-        "rrfScore" : 0.032266457,
-        "relevant" : true
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.032266457,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 143,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-twin",
+        "relevant" : false,
+        "rrfScore" : 0.032266457,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 143,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.03175403,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-project-twin",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d06",
@@ -621,25 +621,25 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 6.227464,
+      "latencyMs" : 4.326599,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 108,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.67>=0.50",
-        "rrfScore" : 0.032786883,
-        "relevant" : true
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 114,
+        "relevant" : true,
+        "rrfScore" : 0.032786883,
+        "gateNote" : "lexical-coverage=0.67>=0.50",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-profile",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 114,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.03175403,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-profile",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d07",
@@ -656,43 +656,43 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 4,
-      "latencyMs" : 6.088198,
+      "latencyMs" : 3.8769766666666667,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 103,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-skill-java",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.032786883,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-skill-java",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 99,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-concurrency",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.032258064,
-        "relevant" : true
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 108,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.63>=0.50",
-        "rrfScore" : 0.031746034,
-        "relevant" : false
-      }, {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
-        "admittedBy" : "lexical",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
+        "relevant" : true,
+        "rrfScore" : 0.032258064,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-evidence-concurrency",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 108,
+        "chunkIndex" : 0,
+        "relevant" : false,
+        "rrfScore" : 0.031746034,
+        "gateNote" : "lexical-coverage=0.63>=0.50",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : false,
         "rrfScore" : 0.03125,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d08",
@@ -709,16 +709,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 13.622444666666667,
+      "latencyMs" : 3.6905633333333334,
       "hits" : [ {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
         "admittedBy" : "lexical",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.83>=0.50",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : true,
         "rrfScore" : 0.032266457,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.83>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d09",
@@ -735,7 +735,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 5.173925,
+      "latencyMs" : 3.708774,
       "hits" : [ ]
     }, {
       "id" : "d10",
@@ -752,7 +752,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 3.778852666666667,
+      "latencyMs" : 9.361618,
       "hits" : [ ]
     }, {
       "id" : "d11",
@@ -769,16 +769,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 1.1806366666666666,
+      "latencyMs" : 0.940743,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 94,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-learning-agent",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 94,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-learning-agent",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d12",
@@ -795,7 +795,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 5.186567,
+      "latencyMs" : 6.852759666666667,
       "hits" : [ ]
     }, {
       "id" : "d13",
@@ -812,16 +812,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 12.976418,
+      "latencyMs" : 3.395483666666667,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 100,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-milktea-perf",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "charEnd" : 100,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-evidence-milktea-perf",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d14",
@@ -838,7 +838,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 3.298855,
+      "latencyMs" : 2.230366666666667,
       "hits" : [ ]
     }, {
       "id" : "d15",
@@ -855,7 +855,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 4.280148666666666,
+      "latencyMs" : 2.524712,
       "hits" : [ ]
     }, {
       "id" : "d16",
@@ -872,15 +872,15 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 0.7727706666666667,
+      "latencyMs" : 0.367098,
       "hits" : [ ]
     } ]
   }, {
     "mode" : "onnx",
     "effectiveBackend" : "BM25 + BGE-small-zh-v1.5 (512d)",
-    "indexBuildTimeMs" : 1549,
-    "warmP50Ms" : 24.496211,
-    "warmP95Ms" : 33.76297666666667,
+    "indexBuildTimeMs" : 1557,
+    "warmP50Ms" : 15.743841333333334,
+    "warmP95Ms" : 24.079832333333332,
     "recallAt4" : {
       "numerator" : 6,
       "denominator" : 22,
@@ -927,7 +927,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 8,
-      "latencyMs" : 12.466926,
+      "latencyMs" : 21.690259666666666,
       "hits" : [ ]
     }, {
       "id" : "d02",
@@ -944,7 +944,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 20.152623666666667,
+      "latencyMs" : 7.506344666666667,
       "hits" : [ ]
     }, {
       "id" : "d03",
@@ -961,7 +961,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 10.211194333333333,
+      "latencyMs" : 5.895482,
       "hits" : [ ]
     }, {
       "id" : "d04",
@@ -978,25 +978,25 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 21.45003566666667,
+      "latencyMs" : 19.342243,
       "hits" : [ {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.032786883,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 120,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
+        "relevant" : false,
+        "rrfScore" : 0.032786883,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 120,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.032002047,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d05",
@@ -1013,34 +1013,34 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 3,
-      "latencyMs" : 25.282752666666667,
+      "latencyMs" : 12.371012,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 120,
         "admittedBy" : "both",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-twin-arch",
-        "gateNote" : "lexical-coverage=0.88>=0.50, vector-score=0.8538>=0.8000",
+        "charEnd" : 120,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.88>=0.50, vector-score=0.8538>=0.8000",
+        "entryId" : "demo-evidence-twin-arch",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 143,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-twin",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
-        "rrfScore" : 0.032258064,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 394,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-doc-vector-notes",
+        "relevant" : false,
+        "rrfScore" : 0.032258064,
         "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-project-twin",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 394,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.031746034,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d06",
@@ -1057,25 +1057,25 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 2,
-      "latencyMs" : 25.373231666666666,
+      "latencyMs" : 15.743841333333334,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 108,
         "admittedBy" : "both",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.67>=0.50, vector-score=0.8534>=0.8000",
-        "rrfScore" : 0.032786883,
-        "relevant" : true
-      }, {
+        "charEnd" : 108,
         "chunkIndex" : 0,
-        "charEnd" : 114,
+        "relevant" : true,
+        "rrfScore" : 0.032786883,
+        "gateNote" : "lexical-coverage=0.67>=0.50, vector-score=0.8534>=0.8000",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-profile",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 114,
+        "chunkIndex" : 0,
+        "relevant" : false,
         "rrfScore" : 0.031513646,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-profile",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d07",
@@ -1092,43 +1092,43 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 4,
-      "latencyMs" : 24.496211,
+      "latencyMs" : 18.299056,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 99,
         "admittedBy" : "both",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-concurrency",
-        "gateNote" : "lexical-coverage=0.50>=0.50, vector-score=0.8110>=0.8000",
+        "charEnd" : 99,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032522473,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.50>=0.50, vector-score=0.8110>=0.8000",
+        "entryId" : "demo-evidence-concurrency",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 0,
+        "admittedBy" : "lexical",
         "charEnd" : 103,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-skill-java",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
-        "rrfScore" : 0.032266457,
-        "relevant" : false
-      }, {
         "chunkIndex" : 0,
-        "charEnd" : 108,
-        "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-project-milktea",
-        "gateNote" : "lexical-coverage=0.63>=0.50",
-        "rrfScore" : 0.032002047,
-        "relevant" : false
+        "relevant" : false,
+        "rrfScore" : 0.032266457,
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-skill-java",
+        "charStart" : 0
       }, {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
         "admittedBy" : "lexical",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 108,
+        "chunkIndex" : 0,
+        "relevant" : false,
+        "rrfScore" : 0.032002047,
+        "gateNote" : "lexical-coverage=0.63>=0.50",
+        "entryId" : "demo-project-milktea",
+        "charStart" : 0
+      }, {
+        "admittedBy" : "lexical",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : false,
         "rrfScore" : 0.029513888,
-        "relevant" : false
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d08",
@@ -1145,16 +1145,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 29.207831333333335,
+      "latencyMs" : 24.079832333333332,
       "hits" : [ {
-        "chunkIndex" : 1,
-        "charEnd" : 452,
         "admittedBy" : "both",
-        "charStart" : 323,
-        "entryId" : "demo-doc-vector-notes",
-        "gateNote" : "lexical-coverage=0.83>=0.50, vector-score=0.8143>=0.8000",
+        "charEnd" : 452,
+        "chunkIndex" : 1,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.83>=0.50, vector-score=0.8143>=0.8000",
+        "entryId" : "demo-doc-vector-notes",
+        "charStart" : 323
       } ]
     }, {
       "id" : "d09",
@@ -1171,7 +1171,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 33.76297666666667,
+      "latencyMs" : 12.632054,
       "hits" : [ ]
     }, {
       "id" : "d10",
@@ -1188,7 +1188,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 18.898463,
+      "latencyMs" : 21.065421333333333,
       "hits" : [ ]
     }, {
       "id" : "d11",
@@ -1205,16 +1205,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 15.874721333333333,
+      "latencyMs" : 6.6946156666666665,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 94,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-learning-agent",
-        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "charEnd" : 94,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.50>=0.50",
+        "entryId" : "demo-learning-agent",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d12",
@@ -1231,7 +1231,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 28.561851333333333,
+      "latencyMs" : 17.917079,
       "hits" : [ ]
     }, {
       "id" : "d13",
@@ -1248,16 +1248,16 @@
       "recallAt4" : 1.0,
       "e2eStatus" : "correct_answer",
       "sourcesCount" : 1,
-      "latencyMs" : 27.954392,
+      "latencyMs" : 9.9641,
       "hits" : [ {
-        "chunkIndex" : 0,
-        "charEnd" : 100,
         "admittedBy" : "lexical",
-        "charStart" : 0,
-        "entryId" : "demo-evidence-milktea-perf",
-        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "charEnd" : 100,
+        "chunkIndex" : 0,
+        "relevant" : true,
         "rrfScore" : 0.032786883,
-        "relevant" : true
+        "gateNote" : "lexical-coverage=0.75>=0.50",
+        "entryId" : "demo-evidence-milktea-perf",
+        "charStart" : 0
       } ]
     }, {
       "id" : "d14",
@@ -1274,7 +1274,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 25.819722333333335,
+      "latencyMs" : 17.901926,
       "hits" : [ ]
     }, {
       "id" : "d15",
@@ -1291,7 +1291,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "false_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 23.59145566666667,
+      "latencyMs" : 8.652439666666666,
       "hits" : [ ]
     }, {
       "id" : "d16",
@@ -1308,7 +1308,7 @@
       "recallAt4" : 0.0,
       "e2eStatus" : "correct_refusal",
       "sourcesCount" : 0,
-      "latencyMs" : 19.516481,
+      "latencyMs" : 14.810242333333333,
       "hits" : [ ]
     } ]
   } ]

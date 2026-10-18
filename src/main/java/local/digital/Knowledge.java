@@ -167,6 +167,7 @@ public class Knowledge implements AutoCloseable {
     }
 
     public List<Entry> ofType(String type) { return entries.stream().filter(e -> e.type().equals(type)).toList(); }
+    public List<Entry> allEntries() { return entries; }
     public int count() { return entries.size(); }
     public String embeddingMode() { return effectiveMode; }
 
