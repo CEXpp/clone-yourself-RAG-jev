@@ -1,12 +1,136 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>个人数字分身 · 本地演示</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>证据桌 · 个人数字分身</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
 <body>
-<div class="layout">
-  <aside><div class="brand">◈ <span>PERSONAL / KNOWLEDGE</span></div><h1>让资料<br>有据可答。</h1><p>从能力到项目，回到每一条来源。</p><div class="notice"><span class="dot"></span>仅使用已批准的公开资料<p id="dataset">当前加载虚构示例，不代表真实用户。</p></div><div class="status" id="status" aria-live="polite">正在连接本地服务…</div><footer>JDK 25 · Spring Boot · Lucene<br>单进程，本地运行</footer></aside>
-  <main><header><div><small>数字分身 / 对话</small><h2>从一个问题开始</h2></div><span class="pill">来源可追溯</span></header>
-  <section id="messages" aria-label="对话记录" aria-live="polite"><article class="welcome"><span class="avatar">◈</span><h3>你好，欢迎了解示例分身。</h3><p>可以询问能力、项目或资料中的具体内容。没有依据时，我会明确说明。</p><div class="suggestions"><button type="button" data-question="你会什么">你会什么 ↗</button><button type="button" data-question="有哪些项目">有哪些项目 ↗</button><button type="button" data-question="怎样记录笔记来源">怎样记录笔记来源 ↗</button></div></article></section>
-  <form id="chat-form"><label for="question">你的问题</label><div class="composer"><textarea id="question" name="question" maxlength="2000" rows="2" placeholder="问问能力、项目或某条公开资料…" required></textarea><button id="send" type="submit">发送 ↑</button></div><p>无密钥也可对话 · 演示向量用于展示流程 · 不提供私有资料访问</p></form>
+<div class="desk-layout">
+  <!-- 左侧深色档案抽屉与管线状态栏（移动端折叠为顶部栏） -->
+  <aside class="desk-sidebar">
+    <div class="brand">
+      <span class="seal-icon" aria-hidden="true">◈</span>
+      <div class="brand-text">
+        <span class="brand-sub">EVIDENCE DESK / RAG</span>
+        <span class="brand-name">证据桌</span>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h1 class="desk-title">让资料，<br>有据可答。</h1>
+      <p class="profile-prototype">原型：Java 后端向 Agent 方向发展的求职者。<br>以事实为锚，每项论断可追溯至公开资料与代码。</p>
+    </div>
+
+    <!-- 示范数据说明（常显组件，D8 / v1 第5节规范） -->
+    <div class="demo-notice" role="note">
+      <div class="notice-badge">
+        <span class="notice-dot"></span>
+        <span>示范数据说明</span>
+      </div>
+      <p id="demo-notice-text">当前加载虚构示例（陈屿，Java 后端求职者），仅限公开批准资料，不代表真实用户。</p>
+    </div>
+
+    <!-- 实时管线状态条 (Live Status Strip) -->
+    <div class="pipeline-strip" id="pipeline-status" aria-live="polite">
+      <div class="strip-header">管线实时状态</div>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="status-label">公开条目</span>
+          <span class="status-val" id="stat-entries">—</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">向量检索</span>
+          <span class="status-val status-highlight" id="stat-embedding">—</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">意图路由</span>
+          <span class="status-val" id="stat-routing">—</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">回答模式</span>
+          <span class="status-val" id="stat-generation">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button type="button" id="reset-btn" class="desk-btn reset-btn" title="清空对话上下文，重新开始">
+        <span aria-hidden="true">↺</span> 新对话
+      </button>
+    </div>
+
+    <footer class="desk-footer">
+      <div>JDK 25 · Spring Boot 3.5 · Lucene 10</div>
+      <div>单进程手写混合检索 · 零构建</div>
+    </footer>
+  </aside>
+
+  <!-- 右侧主桌面区域 (Main Evidence Desk) -->
+  <main class="desk-main">
+    <header class="desk-header">
+      <div class="header-breadcrumb">
+        <span class="crumb-tag">数字分身</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-leaf">问答流水线</span>
+      </div>
+      <div class="header-badges">
+        <span class="desk-badge">来源严格溯源</span>
+        <span class="desk-badge badge-amber">双通道准入门</span>
+      </div>
+    </header>
+
+    <!-- 问答流容器 -->
+    <section id="messages" class="dialogue-desk" aria-label="对话记录" aria-live="polite">
+      <!-- 初始欢迎卡 -->
+      <article class="desk-sheet welcome-sheet" id="welcome-card">
+        <div class="sheet-seal">◈</div>
+        <div class="welcome-body">
+          <h2 class="welcome-heading">欢迎查阅个人数字分身资料档案</h2>
+          <p class="welcome-lead">
+            这是一个严谨遵循事实依据的数字分身问答系统。每一句回答均基于本地已批准公开的技能卡、项目卡与笔记文档；缺少充分依据时将坦诚拒答，杜绝编造。
+          </p>
+          <div class="example-tray">
+            <span class="tray-label">从预设示范问题开始：</span>
+            <div class="example-chips">
+              <button type="button" class="chip-btn" data-question="你会什么">你会什么 ↗</button>
+              <button type="button" class="chip-btn" data-question="有哪些项目">有哪些项目 ↗</button>
+              <button type="button" class="chip-btn" data-question="介绍一下这个项目。">介绍一下这个项目 ↗</button>
+              <button type="button" class="chip-btn" data-question="奶茶项目的自测并发表现如何？">奶茶项目并发自测 ↗</button>
+              <button type="button" class="chip-btn" data-question="RRF 融合常数 k 为什么选 60？">RRF 常数 k 决策 ↗</button>
+              <button type="button" class="chip-btn" data-question="你在生产中用过 LangChain4j 吗？">生产用过 LangChain4j 吗 ↗</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 吸底输入区 (Composer) -->
+    <footer class="composer-container">
+      <form id="chat-form" class="composer-form" autocomplete="off">
+        <label for="question" class="sr-only">输入向数字分身提问的问题</label>
+        <div class="composer-box">
+          <textarea
+            id="question"
+            name="question"
+            rows="2"
+            maxlength="2000"
+            placeholder="问问技能掌握程度、项目经历、技术决策或笔记片段（按 '/' 键快速聚焦）…"
+            required
+          ></textarea>
+          <div class="composer-toolbar">
+            <span class="key-hint">Enter 发送 · Shift+Enter 换行</span>
+            <button id="send" type="submit" class="send-btn">查阅 ↑</button>
+          </div>
+        </div>
+        <div class="composer-subtext">
+          <span>无密钥离线可跑</span> · <span>BM25 与向量混合检索</span> · <span>引用编号强校验兜底</span>
+        </div>
+      </form>
+    </footer>
   </main>
 </div>
-</body></html>
+</body>
+</html>

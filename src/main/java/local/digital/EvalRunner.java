@@ -197,7 +197,7 @@ public class EvalRunner {
             default -> knowledge.embeddingMode();
         };
 
-        Chat chat = new Chat(knowledge, settings.withDisabledGeneration(), http);
+        AnswerService answerService = new AnswerService(knowledge, settings.withDisabledGeneration(), http);
 
         try {
             // Warm-up pass
@@ -264,7 +264,7 @@ public class EvalRunner {
                 }
 
                 // End-to-end evaluation with generation disabled
-                var chatResp = (Chat.Answer) chat.chat(new Chat.Question(c.question())).getBody();
+                Chat.Answer chatResp = answerService.answer(new Chat.Question(c.question()));
                 String actualBucket = mapToBucket(chatResp);
                 boolean routeMatch = actualBucket.equals(c.expectedRoute());
                 if (routeMatch) routeMatches++;
