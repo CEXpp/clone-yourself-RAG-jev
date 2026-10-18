@@ -1,0 +1,49 @@
+services:
+  digital-twin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: clone-yourself-rag:latest
+    container_name: clone-yourself-rag
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      # Network and server binding
+      SERVER_ADDRESS: "0.0.0.0"
+      PORT: "8080"
+      DATA_DIR: "/app/data"
+      DEMO_DATA: "${DEMO_DATA:-true}"
+      EMBEDDING_MODE: "${EMBEDDING_MODE:-auto}"
+
+      # Optional JEV router credentials (empty defaults keep routing local)
+      JEV_URL: "${JEV_URL:-https://api.typesafe.ai/v1/systemone}"
+      JEV_API_KEY: "${JEV_API_KEY:-}"
+      JEV_MODEL: "${JEV_MODEL:-jev-latest}"
+      JEV_THRESHOLD: "${JEV_THRESHOLD:-0.65}"
+
+      # Optional LLM generation credentials (empty defaults fall back to local-extract)
+      GEN_URL: "${GEN_URL:-https://api.openai.com/v1/chat/completions}"
+      GEN_API_KEY: "${GEN_API_KEY:-}"
+      GEN_MODEL: "${GEN_MODEL:-}"
+
+      # Optional remote embedding credentials (empty defaults fall back to local ONNX model)
+      EMBED_URL: "${EMBED_URL:-https://api.openai.com/v1/embeddings}"
+      EMBED_API_KEY: "${EMBED_API_KEY:-}"
+      EMBED_MODEL: "${EMBED_MODEL:-}"
+
+      # Request timeout
+      HTTP_TIMEOUT_SECONDS: "${HTTP_TIMEOUT_SECONDS:-8}"
+    volumes:
+      # Named volume for Lucene index and approved data persistence
+      - twin-data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:8080/api/status || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+volumes:
+  twin-data:
+    name: clone-yourself-rag-data

@@ -1,0 +1,48 @@
+================================================================================
+Attribution Notice for Pre-trained Embedding Assets
+================================================================================
+
+This software distribution includes pre-trained model assets for local neural
+embedding inference, downloaded and verified at build time via scripts/fetch-model.sh:
+
+1. BAAI/bge-small-zh-v1.5
+   - Upstream Model: BAAI/bge-small-zh-v1.5
+   - Author / Copyright: Beijing Academy of Artificial Intelligence (BAAI)
+   - Project URL: https://huggingface.co/BAAI/bge-small-zh-v1.5
+   - Original License: MIT License
+
+2. Xenova/bge-small-zh-v1.5 (ONNX Conversion)
+   - Converted & Distributed by: Xenova (Transformers.js)
+   - Repository: https://huggingface.co/Xenova/bge-small-zh-v1.5
+   - Pinned Revision: 75c43b069aac4d136ba6bc1122f995fedcfd2781
+   - Pinned Artifacts:
+     * onnx/model.onnx (SHA256: 69a0b846f4f116b5e6aabf9546ea6754d02264f3211a13a1bd69b31b8040749a)
+     * vocab.txt      (SHA256: 45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c)
+   - License: MIT License
+
+--------------------------------------------------------------------------------
+MIT License Text (applicable to upstream model and ONNX conversion)
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) 2023 FlagOpen / Beijing Academy of Artificial Intelligence (BAAI)
+Copyright (c) 2023 Xenova
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
