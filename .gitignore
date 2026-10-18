@@ -5,3 +5,4 @@
 /.idea/
 *.iml
 /application-local.properties
+/models/

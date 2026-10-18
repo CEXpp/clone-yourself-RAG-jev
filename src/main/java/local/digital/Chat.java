@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.*;
 import java.util.regex.Pattern;
 
+@org.springframework.context.annotation.Lazy
 @RestController
 @RequestMapping("/api")
 public class Chat {
@@ -107,10 +108,10 @@ public class Chat {
         return new ModelHttp.Decision(intent, -1, provider);
     }
     private static Source source(int n, Entry e, String locator, String excerpt) {
-        return new Source(n, e.title(), e.source(), locator, e.updatedAt(), excerpt);
+        return new Source(n, e.title(), e.source(), locator, e.updatedAt(), excerpt, e.id());
     }
     public record Question(String question) {}
-    public record Source(int number, String title, String origin, String locator, String updatedAt, String excerpt) {}
+    public record Source(int number, String title, String origin, String locator, String updatedAt, String excerpt, String entryId) {}
     public record Skill(String name, String tasks, String level, String boundaries, List<String> evidence, String updatedAt) {}
     public record Answer(String answer, String mode, ModelHttp.Decision routing, String embeddingMode, List<Source> sources, List<Skill> skills) {}
 

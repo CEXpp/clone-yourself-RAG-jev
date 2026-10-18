@@ -135,7 +135,7 @@ class HttpAdaptersTest {
         embedding.set("{\"data\":[{\"embedding\":[0,0,0]}]}");
         Settings settings = new Settings(env);
         try (var knowledge = new Knowledge(settings, mapper, http)) {
-            assertThat(knowledge.embeddingMode()).isEqualTo("local-hash-demo");
+            assertThat(knowledge.embeddingMode()).isEqualTo("lexical-only");
             assertThat(knowledge.search("整理步骤").hits()).isNotEmpty();
         }
     }
