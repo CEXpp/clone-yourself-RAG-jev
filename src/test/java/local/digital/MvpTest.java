@@ -66,13 +66,13 @@ class MvpTest {
     @Test void hybridRetrievalReturnsLocatableSources() throws Exception {
         var json = mapper.readTree(ask("怎样记录笔记来源").body());
         assertThat(json.path("mode").asText()).isEqualTo("local-extract");
-        assertThat(json.path("embeddingMode").asText()).isEqualTo("local-hash-demo");
+        assertThat(json.path("embeddingMode").asText()).isEqualTo("lexical-only");
         assertThat(json.path("sources").size()).isGreaterThan(0);
         assertThat(json.path("sources").get(0).path("locator").asText()).contains("字符");
         assertThat(json.path("sources").get(0).path("origin").asText()).contains("虚构示例");
         var result = app.getBean(Knowledge.class).search("怎样记录笔记来源");
         assertThat(result.lexicalCandidates()).isGreaterThan(0);
-        assertThat(result.vectorCandidates()).isGreaterThan(0);
+        assertThat(result.vectorCandidates()).isZero();
         assertThat(result.hits()).allSatisfy(hit -> assertThat(hit.rankScore()).isPositive());
     }
     @Test void noPrivateAccessOrUnknownFacts() throws Exception {
