@@ -91,7 +91,7 @@ public class OnnxEmbedding implements EmbeddingProvider, AutoCloseable {
 
         private void flushWordSpans(String text, int start, int end, List<TokenSpan> spans) {
             String word = text.substring(start, end);
-            List<String> pieces = wordPiece(word.toLowerCase(Locale.ROOT));
+            List<String> pieces = wordPiece(word);
             for (String piece : pieces) {
                 spans.add(new TokenSpan(piece, start, end));
             }
@@ -107,7 +107,7 @@ public class OnnxEmbedding implements EmbeddingProvider, AutoCloseable {
         public List<String> basicTokenize(String text) {
             List<String> out = new ArrayList<>();
             StringBuilder cur = new StringBuilder();
-            for (char c : text.toLowerCase(Locale.ROOT).toCharArray()) {
+            for (char c : text.toCharArray()) {
                 if (Character.isWhitespace(c)) { flush(out, cur); }
                 else if (isCjk(c) || isPunct(c)) { flush(out, cur); out.add(String.valueOf(c)); }
                 else cur.append(c);

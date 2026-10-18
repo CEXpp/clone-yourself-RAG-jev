@@ -76,6 +76,8 @@ public class EvalRunner {
             MetricFraction hitAt4,
             double mrrAt4,
             MetricFraction routeAccuracy,
+            MetricFraction answeredWithSources,
+            MetricFraction answeredWithEvidence,
             MetricFraction falseAnswerRate,
             MetricFraction falseRefusalRate,
             List<CaseDetail> details
@@ -219,6 +221,8 @@ public class EvalRunner {
             int falseAnswerCount = 0;
             int unanswerableCases = 0;
             int falseRefusalCount = 0;
+            int answeredWithSourcesCount = 0;
+            int answeredWithEvidenceCount = 0;
 
             for (EvalCase c : cases) {
                 // Measure warm retrieval latency (3 sample runs)
@@ -265,8 +269,8 @@ public class EvalRunner {
 
                 // End-to-end evaluation with generation disabled
                 Chat.Answer chatResp = answerService.answer(new Chat.Question(c.question()));
-                String actualBucket = mapToBucket(chatResp);
-                boolean routeMatch = actualBucket.equals(c.expectedRoute());
+                String decidedRoute = mapRouterIntentToRoute(chatResp.routing().intent());
+                boolean routeMatch = decidedRoute.equals(c.expectedRoute());
                 if (routeMatch) routeMatches++;
 
                 String e2eStatus;
@@ -280,13 +284,23 @@ public class EvalRunner {
                         e2eStatus = "correct_refusal";
                     }
                 } else {
-                    // Answerable question refused = false refusal
-                    boolean refused = actualBucket.equals("refuse") || (chatResp.sources().isEmpty() && !actualBucket.equals("structured"));
-                    if (refused) {
+                    boolean answeredWithSources = !chatResp.sources().isEmpty();
+                    boolean answeredWithEvidence = answeredWithSources && chatResp.sources().stream().anyMatch(s -> isSourceRelevant(s, c));
+
+                    if (answeredWithSources) {
+                        answeredWithSourcesCount++;
+                    }
+                    if (answeredWithEvidence) {
+                        answeredWithEvidenceCount++;
+                    }
+
+                    if (!answeredWithSources) {
                         falseRefusalCount++;
                         e2eStatus = "false_refusal";
-                    } else {
+                    } else if (answeredWithEvidence) {
                         e2eStatus = "correct_answer";
+                    } else {
+                        e2eStatus = "answered_without_evidence";
                     }
                 }
 
@@ -310,7 +324,7 @@ public class EvalRunner {
                         c.group(),
                         c.answerable(),
                         c.expectedRoute(),
-                        actualBucket,
+                        decidedRoute,
                         routeMatch,
                         c.expectedEntryIds(),
                         c.keyFact(),
@@ -334,6 +348,8 @@ public class EvalRunner {
             double mrr = answerableCases == 0 ? 0.0 : mrrSum / answerableCases;
 
             MetricFraction routeAccuracy = MetricFraction.of(routeMatches, cases.size());
+            MetricFraction answeredWithSourcesFraction = MetricFraction.of(answeredWithSourcesCount, answerableCases);
+            MetricFraction answeredWithEvidenceFraction = MetricFraction.of(answeredWithEvidenceCount, answerableCases);
             MetricFraction falseAnswerRate = MetricFraction.of(falseAnswerCount, unanswerableCases);
             MetricFraction falseRefusalRate = MetricFraction.of(falseRefusalCount, answerableCases);
 
@@ -347,6 +363,8 @@ public class EvalRunner {
                     hitFraction,
                     mrr,
                     routeAccuracy,
+                    answeredWithSourcesFraction,
+                    answeredWithEvidenceFraction,
                     falseAnswerRate,
                     falseRefusalRate,
                     details
@@ -357,12 +375,32 @@ public class EvalRunner {
         }
     }
 
+    public static String mapRouterIntentToRoute(String intent) {
+        if (intent == null) return "unknown";
+        return switch (intent) {
+            case "skills", "projects", "profile" -> "structured";
+            case "retrieve" -> "retrieve";
+            case "unknown" -> "refuse";
+            default -> intent;
+        };
+    }
+
     private static boolean isChunkRelevant(Knowledge.Hit hit, EvalCase c) {
         if (c.expectedEntryIds() == null || !c.expectedEntryIds().contains(hit.entryId())) {
             return false;
         }
         if (c.keyFact() != null && !c.keyFact().isBlank()) {
             return hit.text().contains(c.keyFact());
+        }
+        return true;
+    }
+
+    private static boolean isSourceRelevant(Chat.Source source, EvalCase c) {
+        if (c.expectedEntryIds() == null || !c.expectedEntryIds().contains(source.entryId())) {
+            return false;
+        }
+        if (c.keyFact() != null && !c.keyFact().isBlank()) {
+            return source.excerpt() != null && source.excerpt().contains(c.keyFact());
         }
         return true;
     }
@@ -378,11 +416,11 @@ public class EvalRunner {
         System.out.println();
         System.out.println("### Evaluation Summary on Fixed Fixture Corpus (`" + split + ".json`, N=" + totalCases + ")");
         System.out.println();
-        System.out.println("| Mode | Effective Backend | Index Build | Warm p50 | Warm p95 | Recall@4 | Hit@4 | MRR@4 | Route Accuracy | False-Answer Rate | False-Refusal Rate |");
-        System.out.println("|---|---|---|---|---|---|---|---|---|---|---|");
+        System.out.println("| Mode | Effective Backend | Index Build | Warm p50 | Warm p95 | Recall@4 | Hit@4 | MRR@4 | Route Accuracy | Ans w/ Sources | Ans w/ Evidence | False-Answer Rate | False-Refusal Rate |");
+        System.out.println("|---|---|---|---|---|---|---|---|---|---|---|---|---|");
         for (ModeResult r : results) {
             System.out.printf(Locale.ROOT,
-                    "| %s | %s | %dms | %.2fms | %.2fms | %s | %s | %.3f | %s | %s | %s |\n",
+                    "| %s | %s | %dms | %.2fms | %.2fms | %s | %s | %.3f | %s | %s | %s | %s | %s |\n",
                     r.mode(),
                     r.effectiveBackend(),
                     r.indexBuildTimeMs(),
@@ -392,6 +430,8 @@ public class EvalRunner {
                     r.hitAt4().formatted(),
                     r.mrrAt4(),
                     r.routeAccuracy().formatted(),
+                    r.answeredWithSources().formatted(),
+                    r.answeredWithEvidence().formatted(),
                     r.falseAnswerRate().formatted(),
                     r.falseRefusalRate().formatted()
             );
@@ -427,6 +467,8 @@ public class EvalRunner {
             if (a.startsWith("--app.eval=")) {
                 opts.put("split", a.substring("--app.eval=".length()));
             } else if (a.startsWith("--app.eval-split=") || a.startsWith("--app.eval.split=")) {
+                opts.put("split", a.substring(a.indexOf('=') + 1));
+            } else if (a.startsWith("--app.eval-set=") || a.startsWith("--app.eval.set=")) {
                 opts.put("split", a.substring(a.indexOf('=') + 1));
             } else if (a.startsWith("--app.embedding-mode=")) {
                 opts.put("embedding-mode", a.substring("--app.embedding-mode=".length()));

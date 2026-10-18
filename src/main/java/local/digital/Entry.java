@@ -19,5 +19,20 @@ public record Entry(String id, String type, String title, String content, String
             throw new IllegalArgumentException("条目过长，请拆分后导入");
         java.time.LocalDate.parse(updatedAt);
     }
+    public String searchableContent() {
+        StringBuilder sb = new StringBuilder();
+        if (content != null && !content.isEmpty()) {
+            sb.append(content);
+        }
+        if (level != null && !level.isBlank()) {
+            if (!sb.isEmpty()) sb.append("\n");
+            sb.append("熟练程度：").append(level);
+        }
+        if (boundaries != null && !boundaries.isBlank()) {
+            if (!sb.isEmpty()) sb.append("\n");
+            sb.append("范围限制：").append(boundaries);
+        }
+        return sb.toString();
+    }
     private static boolean blank(String s) { return s == null || s.isBlank(); }
 }

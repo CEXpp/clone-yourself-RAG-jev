@@ -155,6 +155,57 @@ class RouterAndMultiTurnTest {
     }
 
     // -------------------------------------------------------------
+    // Fix 3: Constrained overview regression tests & narrowing guard
+    // -------------------------------------------------------------
+    @Test
+    void routerConstrainedOverviewPhrasingsMustRouteToRetrieval() {
+        List<String> constrainedOverviews = List.of(
+                "列出支付项目",
+                "有哪些金融项目",
+                "做过哪些电商项目",
+                "做过哪些小程序项目",
+                "列出你的前端技能",
+                "你有哪些大数据技能",
+                "介绍一下你的教育背景",
+                "参与过哪些推荐系统项目"
+        );
+
+        for (String q : constrainedOverviews) {
+            ModelHttp.Decision d = Chat.local(q, "local");
+            assertThat(d.intent())
+                    .as("Constrained overview phrasing MUST route to retrieval: " + q)
+                    .isEqualTo("retrieve");
+            assertThat(d.explanation()).contains("retrieve");
+        }
+    }
+
+    @Test
+    void deterministicNarrowingGuardEnforcesRetrievalEvenIfRemoteDecidesOverview() throws Exception {
+        var env = new MockEnvironment()
+                .withProperty("app.data-dir", dir.toString())
+                .withProperty("app.demo-data", "true")
+                .withProperty("app.embedding-mode", "lexical")
+                .withProperty("app.http-timeout-seconds", "1");
+        var settings = new Settings(env);
+        var http = new ModelHttp(settings, mapper);
+
+        try (var knowledge = new Knowledge(settings, mapper, http)) {
+            var answerService = new AnswerService(knowledge, settings, http);
+
+            // "列出支付项目" routes to retrieval, NOT the unrestricted projects overview
+            Chat.Answer ans = answerService.answer(new Chat.Question("列出支付项目"));
+            assertThat(ans.routing().intent()).isEqualTo("retrieve");
+            assertThat(ans.mode()).isNotEqualTo("structured");
+
+            // "列出区块链项目" carries constraint "区块链" (not in corpus), routes to retrieval and yields insufficient-evidence
+            Chat.Answer ansBlockchain = answerService.answer(new Chat.Question("列出区块链项目"));
+            assertThat(ansBlockchain.routing().intent()).isEqualTo("retrieve");
+            assertThat(ansBlockchain.mode()).isEqualTo("insufficient-evidence");
+            assertThat(ansBlockchain.sources()).isEmpty();
+        }
+    }
+
+    // -------------------------------------------------------------
     // Scope B: Multi-turn Resolution End-to-End Tests
     // -------------------------------------------------------------
     @Test
